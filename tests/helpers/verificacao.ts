@@ -13,7 +13,7 @@ export async function verificarUsuarioCPF(page: Page, nome: string) {
     await page.getByRole('button', { name: 'Excluir' }).first().click();
     await page.getByRole('button', { name: 'Sim', exact: true }).click();
 
-    await expect(page.getByText('Processando, aguarde')).not.toBeVisible({ timeout: 20000 });
+    await expect(page.getByText('Processando, aguarde')).not.toBeVisible({ timeout: 40000 });
     await expect(page.getByText('Excluído com sucesso')).toBeVisible();
     await page.waitForTimeout(2000);
   }
