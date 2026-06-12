@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { login } from './helpers/login';
-import { acessarUsuarios } from './helpers/menus';
+import { acessarUsuarios, excluirUsuarioSeExistir } from './helpers/menus';
 import { gerarCpfValido } from './helpers/cpf';
 
 async function fillCampo(page: Page, label: string, value: string) {
@@ -14,17 +14,21 @@ async function fillCampo(page: Page, label: string, value: string) {
 }
 
 test('Criar um usuário CPF', async ({ page }) => {
+  test.setTimeout(60000);
+
   await login(page);
   await acessarUsuarios(page);
 
   const cpf = gerarCpfValido();
-  const timestamp = Date.now();
+  const nome = 'Usuário Automação CPF';
 
-  await fillCampo(page, '*Nome:', 'Teste Automação');
+  await excluirUsuarioSeExistir(page, nome);
+
+  await fillCampo(page, '*Nome:', nome);
   await page.getByLabel('*Tipo:').first().selectOption('0');
   await fillCampo(page, '*CPF:', cpf);
-  await fillCampo(page, '*Email:', `teste.automacao.${timestamp}@teste.com`);
-  await fillCampo(page, '*Usuário:', `teste.automacao.${timestamp}`);
+  await fillCampo(page, '*Email:', 'usuario.automacao_cpf@gmail.com');
+  await fillCampo(page, '*Usuário:', 'usuario_automacao_CPF');
   await fillCampo(page, '*Senha:', 'Senha@123');
   await fillCampo(page, '*Confirmação:', 'Senha@123');
   await page.getByLabel('*Situação:').first().selectOption('A');
@@ -32,4 +36,14 @@ test('Criar um usuário CPF', async ({ page }) => {
   await page.getByRole('button', { name: 'Adicionar' }).click();
 
   await expect(page.getByText('Cadastrado com sucesso')).toBeVisible();
+
+  const campoPesquisaNome = page.getByText('Nome:', { exact: true }).first().locator('xpath=..').locator('input, textarea').first();
+  if (!(await campoPesquisaNome.isVisible())) {
+    await page.getByRole('button', { name: 'Pesquisar Usuários' }).click();
+    await page.waitForTimeout(500);
+  }
+  await fillCampo(page, 'Nome:', nome);
+  await page.locator('.btnPesquisarFiltroPesquisa').click();
+
+  await expect(page.locator('table:visible').first().getByText(nome).first()).toBeVisible();
 });
