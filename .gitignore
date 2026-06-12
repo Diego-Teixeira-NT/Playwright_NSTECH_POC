@@ -10,6 +10,7 @@ npm-debug.log*
 # Env files
 .env
 .env.*
+!.env.example
 
 # Editor/OS
 .vscode/
