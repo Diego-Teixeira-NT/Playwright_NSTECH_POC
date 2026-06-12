@@ -1,6 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { login } from './helpers/login';
-import { acessarUsuarios, excluirUsuarioSeExistir } from './helpers/menus';
+import { acessarUsuarios } from './helpers/menus';
+import { verificarUsuarioCPF } from './helpers/verificacao';
 import { gerarCpfValido } from './helpers/cpf';
 
 async function fillCampo(page: Page, label: string, value: string) {
@@ -22,7 +23,7 @@ test('Criar um usuário CPF', async ({ page }) => {
   const cpf = gerarCpfValido();
   const nome = 'Usuário Automação CPF';
 
-  await excluirUsuarioSeExistir(page, nome);
+  await verificarUsuarioCPF(page, nome);
 
   await fillCampo(page, '*Nome:', nome);
   await page.getByLabel('*Tipo:').first().selectOption('0');
