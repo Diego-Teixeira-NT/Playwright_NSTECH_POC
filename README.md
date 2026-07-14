@@ -122,12 +122,31 @@ As variáveis necessárias são: `BASE_URL`, `LOGIN_USERNAME`, `LOGIN_PASSWORD`.
 - **Excluir um usuário CPF** (`usuarios.spec.ts`): cria o usuário e em seguida o exclui, validando a exclusão.
 - **Criar/Editar/Excluir um usuário CPF via API** (`usuarios.api.spec.ts`): realiza as mesmas operações de cadastro, edição e exclusão chamando diretamente os endpoints da API (`Usuario/Adicionar`, `Usuario/Atualizar`, `Usuario/ExcluirPorCodigo`, `Usuario/Pesquisa`), reaproveitando a sessão autenticada do navegador. A validação de cada operação é feita na interface (front-end), via tela de Usuários.
 
-## Relatório
+## Relatórios
 
-Após a execução, o relatório HTML pode ser aberto com:
+Os testes geram dois relatórios automaticamente a cada execução.
+
+### Playwright HTML
+
 ```
 npx playwright show-report
 ```
+
+### Allure
+
+Os resultados são coletados em `allure-results/` durante a execução. Para gerar e abrir o relatório:
+
+```
+npm run allure:report
+```
+
+Ou em etapas separadas:
+```
+npm run allure:generate   # gera o relatório em allure-report/
+npm run allure:open       # abre no browser
+```
+
+> `allure-results/` e `allure-report/` não são versionados (estão no `.gitignore`).
 
 ## Autor
 
