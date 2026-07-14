@@ -6,7 +6,20 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env.urls') });
 dotenv.config({ path: path.resolve(__dirname, '.env'), quiet: true });
+
+const urls: Record<string, string | undefined> = {
+  torre:     process.env.BASE_URL_TORRE,
+  danone:    process.env.BASE_URL_DANONE,
+  unilever:  process.env.BASE_URL_UNILEVER,
+  boticario: process.env.BASE_URL_BOTICARIO,
+  ype:       process.env.BASE_URL_YPE,
+  minerva:   process.env.BASE_URL_MINERVA,
+  gruposc:   process.env.BASE_URL_GRUPOSC,
+};
+
+const baseURL = urls[process.env.AMBIENTE ?? ''] ?? process.env.BASE_URL;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -29,7 +42,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: process.env.BASE_URL,
+    baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

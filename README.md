@@ -14,26 +14,29 @@ Testes automatizados com [Playwright](https://playwright.dev/) + TypeScript para
    npm install
    ```
 
-2. Crie os arquivos `.env.<ambiente>` na raiz do projeto (baseado em `.env.example`) com as credenciais de acesso:
+2. Crie um arquivo `.env` na raiz do projeto (baseado em `.env.example`) com as credenciais de acesso:
    ```
-   BASE_URL=https://<url-do-ambiente>
    LOGIN_USERNAME=seu_usuario
    LOGIN_PASSWORD=sua_senha
    ```
 
-   Nenhum arquivo `.env.*` é versionado (estão no `.gitignore`).
+   O arquivo `.env` não é versionado (está no `.gitignore`). As URLs dos ambientes ficam em `.env.urls`, que **é versionado**.
 
 ## Ambientes disponíveis
 
-| Ambiente     | Arquivo          | URL                                           |
-|--------------|------------------|-----------------------------------------------|
-| Torre        | `.env.torre`     | https://torre.multihomo.com.br                |
-| Danone       | `.env.danone`    | https://danonehomo.multiembarcador.com.br     |
-| Unilever     | `.env.unilever`  | https://unilever.multihomo.com.br             |
-| Boticário    | `.env.boticario` | https://boticario.multihomo.com.br            |
-| Ypê          | `.env.ype`       | https://ype.multihomo.com.br                  |
-| Minerva Foods| `.env.minerva`   | https://minervafoods.multihomo.com.br         |
-| Grupo SC     | `.env.gruposc`   | https://gruposc.multihomo.com.br              |
+As URLs estão definidas no arquivo `.env.urls` (versionado no git):
+
+| Variável              | Ambiente      | URL                                           |
+|-----------------------|---------------|-----------------------------------------------|
+| `BASE_URL_TORRE`      | Torre         | https://torre.multihomo.com.br                |
+| `BASE_URL_DANONE`     | Danone        | https://danonehomo.multiembarcador.com.br     |
+| `BASE_URL_UNILEVER`   | Unilever      | https://unilever.multihomo.com.br             |
+| `BASE_URL_BOTICARIO`  | Boticário     | https://boticario.multihomo.com.br            |
+| `BASE_URL_YPE`        | Ypê           | https://ype.multihomo.com.br                  |
+| `BASE_URL_MINERVA`    | Minerva Foods | https://minervafoods.multihomo.com.br         |
+| `BASE_URL_GRUPOSC`    | Grupo SC      | https://gruposc.multihomo.com.br              |
+
+O ambiente é selecionado pela variável `AMBIENTE` (ex: `torre`, `danone`, `unilever`, etc.).
 
 ## Estrutura do projeto
 
@@ -93,7 +96,7 @@ npx playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4
 
 ### Smoke test por ambiente (local)
 
-Use os scripts do `package.json` passando o ambiente e o número de workers desejado após `--`:
+Use os scripts do `package.json` passando o número de workers desejado após `--`:
 
 ```
 npm run smoke:torre -- --workers=4
@@ -106,12 +109,20 @@ npm run smoke:unilever -- --workers=4 --project=chromium
 
 ### Smoke test via pipeline (CI/CD)
 
-Na pipeline, defina as variáveis de ambiente diretamente como secrets/variables e execute:
+As URLs já estão no repositório em `.env.urls`. Na pipeline, defina apenas:
+
+| Variável        | Tipo    | Descrição                                 |
+|-----------------|---------|-------------------------------------------|
+| `AMBIENTE`      | Variável| Nome do ambiente: `torre`, `danone`, etc. |
+| `LOGIN_USERNAME`| Secret  | Usuário de acesso ao MultiTMS             |
+| `LOGIN_PASSWORD`| Secret  | Senha de acesso ao MultiTMS               |
+
+Comando de execução na pipeline:
 ```
 npm run smoke -- --workers=4
 ```
 
-As variáveis necessárias são: `BASE_URL`, `LOGIN_USERNAME`, `LOGIN_PASSWORD`.
+A URL é resolvida automaticamente pelo `playwright.config.ts` com base no `AMBIENTE` definido.
 
 ## Testes disponíveis
 
