@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "smoke:torre":  "dotenv -e .env.torre  -- playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4",
+    "smoke:varejo": "dotenv -e .env.varejo -- playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4",
+    "test:torre":   "dotenv -e .env.torre  -- playwright test --project=chromium --workers=1",
+    "test:varejo":  "dotenv -e .env.varejo -- playwright test --project=chromium --workers=1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Diego-Teixeira-NT/Playwright_NSTECH.git"
@@ -19,6 +24,7 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "dotenv-cli": "^11.0.0"
   }
 }
