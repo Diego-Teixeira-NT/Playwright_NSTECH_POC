@@ -96,13 +96,22 @@ npx playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4
 
 ### Smoke test por ambiente (local)
 
-Use os scripts do `package.json` passando o número de workers desejado após `--`:
+Escolha o script do ambiente desejado e passe o número de workers após `--`:
 
+| Comando                                    | Ambiente      |
+|--------------------------------------------|---------------|
+| `npm run smoke:torre -- --workers=4`       | Torre         |
+| `npm run smoke:danone -- --workers=4`      | Danone        |
+| `npm run smoke:unilever -- --workers=4`    | Unilever      |
+| `npm run smoke:boticario -- --workers=4`   | Boticário     |
+| `npm run smoke:ype -- --workers=4`         | Ypê           |
+| `npm run smoke:minerva -- --workers=4`     | Minerva Foods |
+| `npm run smoke:gruposc -- --workers=4`     | Grupo SC      |
+
+Flags extras disponíveis:
 ```
-npm run smoke:torre -- --workers=4
-npm run smoke:danone -- --workers=2
-npm run smoke:boticario -- --workers=1 --headed
-npm run smoke:unilever -- --workers=4 --project=chromium
+npm run smoke:torre -- --workers=4 --project=chromium   # só Chromium
+npm run smoke:torre -- --workers=1 --headed             # visual, sem paralelo
 ```
 
 > Tudo após o `--` é repassado diretamente ao Playwright, permitindo combinar qualquer flag (`--workers`, `--headed`, `--project`, etc.).
