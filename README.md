@@ -28,6 +28,7 @@ Testes automatizados com [Playwright](https://playwright.dev/) + TypeScript para
 ```
 tests/
 ├── login.spec.ts          # Teste de login
+├── menus.smoke.spec.ts    # Smoke test: valida disponibilidade de todas as telas via URL (#hash)
 ├── usuarios.spec.ts        # Testes de cadastro, edição e exclusão de usuário (CPF) via interface
 ├── usuarios.api.spec.ts    # Mesmos testes de cadastro, edição e exclusão, porém via API (validação no front)
 └── helpers/
@@ -71,8 +72,16 @@ npx playwright test tests/usuarios.api.spec.ts --project=chromium --headed --wor
 
 > ⚠️ Sem `--workers=1`, os testes de `usuarios.spec.ts` e `usuarios.api.spec.ts` podem falhar por concorrência (um teste exclui o usuário enquanto outro está cadastrando/editando).
 
+Rodar o smoke test de menus (450 telas, pode usar workers paralelos pois é read-only):
+```
+npx playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4
+```
+
+> O smoke test navega via URL (`#hash`) e funciona em qualquer ambiente — basta ajustar `BASE_URL` no `.env`. Recomendado `--workers=4` para concluir em ~15 minutos.
+
 ## Testes disponíveis
 
+- **Smoke test de menus** (`menus.smoke.spec.ts`): navega pelas ~450 telas do MultiTMS via URL e verifica ausência de erros HTTP (404/500), Internal Server Error e loading infinito. Organizado por menu com suporte a folding no VS Code (`#region`).
 - **Validar login com sucesso** (`login.spec.ts`): faz login e valida a mensagem de boas-vindas.
 - **Criar um usuário CPF** (`usuarios.spec.ts`): acessa Administrativo > Usuários, remove cadastros anteriores com o mesmo nome, cria um novo usuário com CPF válido e confirma o cadastro.
 - **Editar um usuário CPF** (`usuarios.spec.ts`): cria o usuário e edita o campo Nome, validando a atualização.
