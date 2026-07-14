@@ -6,16 +6,16 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Diego-Teixeira-NT/Playwright_NSTECH.git"
+    "url": "git+https://github.com/Diego-Teixeira-NT/Playwright_NSTECH_POC.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/Diego-Teixeira-NT/Playwright_NSTECH/issues"
+    "url": "https://github.com/Diego-Teixeira-NT/Playwright_NSTECH_POC/issues"
   },
-  "homepage": "https://github.com/Diego-Teixeira-NT/Playwright_NSTECH#readme",
+  "homepage": "https://github.com/Diego-Teixeira-NT/Playwright_NSTECH_POC#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3",
