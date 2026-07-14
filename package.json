@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "smoke": "playwright test tests/menus.smoke.spec.ts",
+    "smoke:torre": "dotenv -e .env.torre -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:danone": "dotenv -e .env.danone -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:unilever": "dotenv -e .env.unilever -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:boticario": "dotenv -e .env.boticario -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:ype": "dotenv -e .env.ype -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:minerva": "dotenv -e .env.minerva -- playwright test tests/menus.smoke.spec.ts",
+    "smoke:gruposc": "dotenv -e .env.gruposc -- playwright test tests/menus.smoke.spec.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Diego-Teixeira-NT/Playwright_NSTECH_POC.git"
@@ -19,6 +28,7 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "dotenv-cli": "^11.0.0"
   }
 }

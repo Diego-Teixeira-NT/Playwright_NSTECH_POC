@@ -1,6 +1,6 @@
 # Playwright_NSTECH
 
-Testes automatizados com [Playwright](https://playwright.dev/) + TypeScript para o sistema MultiTMS (https://varejo.multihomo.com.br).
+Testes automatizados com [Playwright](https://playwright.dev/) + TypeScript para o sistema MultiTMS — suporte a múltiplos ambientes.
 
 ## Pré-requisitos
 
@@ -14,14 +14,26 @@ Testes automatizados com [Playwright](https://playwright.dev/) + TypeScript para
    npm install
    ```
 
-2. Crie um arquivo `.env` na raiz do projeto (baseado em `.env.example`) com as credenciais de acesso:
+2. Crie os arquivos `.env.<ambiente>` na raiz do projeto (baseado em `.env.example`) com as credenciais de acesso:
    ```
-   BASE_URL=https://varejo.multihomo.com.br
+   BASE_URL=https://<url-do-ambiente>
    LOGIN_USERNAME=seu_usuario
    LOGIN_PASSWORD=sua_senha
    ```
 
-   O arquivo `.env` não é versionado (está no `.gitignore`).
+   Nenhum arquivo `.env.*` é versionado (estão no `.gitignore`).
+
+## Ambientes disponíveis
+
+| Ambiente     | Arquivo          | URL                                           |
+|--------------|------------------|-----------------------------------------------|
+| Torre        | `.env.torre`     | https://torre.multihomo.com.br                |
+| Danone       | `.env.danone`    | https://danonehomo.multiembarcador.com.br     |
+| Unilever     | `.env.unilever`  | https://unilever.multihomo.com.br             |
+| Boticário    | `.env.boticario` | https://boticario.multihomo.com.br            |
+| Ypê          | `.env.ype`       | https://ype.multihomo.com.br                  |
+| Minerva Foods| `.env.minerva`   | https://minervafoods.multihomo.com.br         |
+| Grupo SC     | `.env.gruposc`   | https://gruposc.multihomo.com.br              |
 
 ## Estrutura do projeto
 
@@ -77,7 +89,29 @@ Rodar o smoke test de menus (450 telas, pode usar workers paralelos pois é read
 npx playwright test tests/menus.smoke.spec.ts --project=chromium --workers=4
 ```
 
-> O smoke test navega via URL (`#hash`) e funciona em qualquer ambiente — basta ajustar `BASE_URL` no `.env`. Recomendado `--workers=4` para concluir em ~15 minutos.
+> O smoke test navega via URL (`#hash`) e funciona em qualquer ambiente. Recomendado `--workers=4` para concluir em ~15 minutos.
+
+### Smoke test por ambiente (local)
+
+Use os scripts do `package.json` passando o ambiente e o número de workers desejado após `--`:
+
+```
+npm run smoke:torre -- --workers=4
+npm run smoke:danone -- --workers=2
+npm run smoke:boticario -- --workers=1 --headed
+npm run smoke:unilever -- --workers=4 --project=chromium
+```
+
+> Tudo após o `--` é repassado diretamente ao Playwright, permitindo combinar qualquer flag (`--workers`, `--headed`, `--project`, etc.).
+
+### Smoke test via pipeline (CI/CD)
+
+Na pipeline, defina as variáveis de ambiente diretamente como secrets/variables e execute:
+```
+npm run smoke -- --workers=4
+```
+
+As variáveis necessárias são: `BASE_URL`, `LOGIN_USERNAME`, `LOGIN_PASSWORD`.
 
 ## Testes disponíveis
 
